@@ -1,0 +1,45 @@
+<!-- http://localhost:8080/shoppingcart -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> <!-- thymeleaf! -->
+<head>
+	<title>Record shop</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+
+	<h1>shoppingcart.html</h1>
+	
+	<div class="container" style="margin-top: 2%;">
+		<table class="table table-striped">
+			<tr>
+				<th>quantity</th>
+				<th>total</th>
+				<th>artist</th>
+			</tr>
+			<tr th:each="item : ${cartItems}">
+				<td th:text="${item.quantity}"></td>
+				<td th:text="${item.total}"></td>
+				<td th:text="${item.record.artist}"></td>
+			</tr>
+		</table>
+		<a th:href="@{/recordlist}" style="padding: 45px 0px 45px 0px;"><button>Continue shopping</button></a>
+	</div>
+	
+</body>
+
+
+<!-- <td th:text="${item.record.price} + ' €'"></td> -->
+<!-- <td th:text="${item.totalCost} + ' €'"></td> -->
+
+<!--  testataan formia -->
+<!--  <th>FORM</th> -->
+<!--<td><form><input th:value="${item.quantity}"></form></td> -->
+
+
+<!--  th:object="${item}" -->
+<!--  th:value="${item.quantity}" -->
+<!--  th:field="*{quantity}" -->
+
+

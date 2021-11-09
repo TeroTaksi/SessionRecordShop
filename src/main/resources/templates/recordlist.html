@@ -1,0 +1,70 @@
+<!-- http://localhost:8080/recordlist -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> <!-- thymeleaf! -->
+<head>
+	<title>Record shop</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
+</head>
+<body>
+
+	<h1>Recordlist.html</h1>
+	
+	<div class="container">
+	  <div class="row" th:each="record : ${records}" style="padding-bottom: 25px;">
+		<div class="col-sm-4" >
+			<img th:src="${record.albumCover}" alt="${record.album}" style="width:100%; max-width:300px;">
+		</div>
+		<div class="col-sm-8" >
+	    	<h5 th:text="${record.artist}"></h5> 
+	   		<p>Album: <span th:text="${record.album}"></span></p>
+	   		<p>Label: <span th:text="${record.label}"></span></p>
+	    	<p>Released: <span th:text="${record.year}"></span></p>
+	   		<p>Price: <span th:text="${#numbers.formatDecimal(record.price, 2, 'DEFAULT', 2, 'COMMA')} + ' €'"></span></p>
+	   		<a th:href="@{/addcart/{id} (id=${record.recordId})}"><button>Buy</button></a>
+	   		<!-- sec:authorize="" - Edit & Delete: admin only-->
+	   		<a th:href="@{/editrecord/{id} (id=${record.recordId})}"><button>Edit</button></a>
+	   		<a th:href="@{/deleterecord/{id} (id=${record.recordId})}"><button>Delete</button></a>
+	   		<br>
+		 </div>
+	  </div>
+	  <a th:href="@{/shoppingcart}" style="padding: 45px 0px 45px 0px;"><button>Shopping cart</button></a>
+	  <!-- sec:authorize="" - Add record: admin only-->
+	  <a th:href="@{/addrecord}" style="padding: 45px 0px 45px 0px;"><button>Add record</button></a>
+	</div>
+	
+</body>
+</html>
+
+<!--
+--------------------------
+<a href="/shoppingcart"><button>Cart</button></a>
+--------------------------
+
+<div class="container">
+  <div class="row" th:each="record : ${records}" style="padding-bottom: 25px;">
+	<div class="col-sm-4" >
+		<img th:src="${record.albumCover}" alt="${record.album}" style="width:100%; max-width:300px;">
+	</div>
+	<div class="col-sm-8" >
+    	<h5 th:text="${record.artist}"></h5> 
+   		<p th:text="${record.album}"></p>
+   		<p th:text="${record.label}"></p>
+    	<p th:text="${record.year}"></p>
+   		<p th:text="${record.price} + ' €'"></p>
+   		<button th:id="${record.recordId}">Buy</button>
+   		<br>
+	 </div>
+  </div>
+</div>
+
+---------------------------
+
+<button th:href="${/addcart/{id} (id=${record.recordId})}">Buy</button>
+<button th:id="${record.recordId}">Buy</button>
+th:onclick 
+
+shoppingCart.add(record)
+
+ -->
