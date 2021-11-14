@@ -8,7 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class ShopCartItem {
+public class ShopCartItem { //----------- S E S S I O N -------------------------------------
 	
 	@Id // Primary Key
 	@GeneratedValue(strategy=GenerationType.AUTO) // auto generate Primary Key

@@ -7,25 +7,58 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+//
+//import hh.swd20.recordshop.domain.Format;
+//import hh.swd20.recordshop.domain.ShopCartItem;
+
 
 @Entity
-public class Record {
+public class Record { //----------- S E S S I O N -------------------------------------
 	
+	//@NotNull // Jos päällä, /saverecord ei natsaa
 	@Id // Primary Key
 	@GeneratedValue(strategy=GenerationType.AUTO) // auto generate Primary Key
 	private Long recordId;
+	
+	//@NotEmpty
+	@NotNull
+	@Size(min=1, max=60)
 	private String artist;
+	
+	//@NotEmpty
+	@NotNull
+	@Size(min=1, max=60)
 	private String album;
+	
+	//@NotEmpty
+	@NotNull
+	@Size(min=1, max=60)
 	private String label;
+	
+	@NotNull
+	@Digits(integer = 4, fraction = 0)
 	private int year;
+
+	@NotNull
 	private double price;
+	
+	@NotNull
 	private String albumCover;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="record")
 	private List<ShopCartItem> ShopCartItem;
 	
-	public Record(String artist,String album, String label, int year, double price, String albumCover) {
+	@ManyToOne
+	@JoinColumn(name = "formatId") // kts. Format-luokan id
+	private Format format;
+	
+	public Record(String artist,String album, String label, int year, double price, String albumCover, Format format) {
 		super();
 		this.artist = artist;
 		this.album = album;
@@ -33,6 +66,7 @@ public class Record {
 		this.year = year;
 		this.price = price;
 		this.albumCover = albumCover;
+		this.format = format;
 	}
 	
 	public Record() {
@@ -49,7 +83,7 @@ public class Record {
 	public Long getRecordId() {
 		return recordId;
 	}
-	
+
 	public String getArtist() {
 		return artist;
 	}
@@ -78,11 +112,15 @@ public class Record {
 		return albumCover;
 	}
 	
+	public Format getFormat() {
+		return format;
+	}
+	
 	public List<ShopCartItem> getShopCartItem() {
 		return ShopCartItem;
 	}
 
-	// Setters
+	// Setters -------------------------------------------
 	public void setArtist(String artist) {
 		this.artist = artist;
 	}	
@@ -106,6 +144,10 @@ public class Record {
 	public void setAlbumCover(String albumCover) {
 		this.albumCover = albumCover;
 	}
+	
+	public void setFormat(Format format) {
+		this.format = format;
+	}
 
 	public void setShopCartItem(List<ShopCartItem> shopCartItem) {
 		ShopCartItem = shopCartItem;
@@ -115,7 +157,7 @@ public class Record {
 	public String toString() {
 		return "Record [recordId=" + recordId + ", artist=" + artist + ", album=" + album + ", label=" + label
 				+ ", year=" + year + ", price=" + price + ", albumCover=" + albumCover + ", ShopCartItem="
-				+ ShopCartItem + "]";
+				+ ShopCartItem + ", format=" + format + "]";
 	}
 	
 }
