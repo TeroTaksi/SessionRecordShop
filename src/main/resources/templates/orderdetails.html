@@ -1,10 +1,9 @@
-<!-- http://localhost:8080/shoppingcart -->
-<!-- http://localhost:8080/shoppingcart -->
+<!-- http://localhost:8080/recordlist -->
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> <!-- thymeleaf! -->
 <head>
-	<title>Record shop - Shopping cart</title>
+	<title>Record shop - Details</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
 </head>
@@ -40,45 +39,22 @@
 				<th>Unit Price</th>
 				<th>Quantity</th>
 				<th>Total</th>
-				<th>Delete</th>
 			</tr>
-			<tr th:each="item : ${cartItems}">
+			<tr th:each="item : ${orderDetails}">
 				<td><img th:src="${item.record.albumCover}" alt="album_cover" style="width:100%; max-width:100px;"></td>
 				<td th:text="${item.record.artist}"></td>
 				<td th:text="${item.record.album}"></td>
 				<td th:text="${item.record.format.formatName}"></td>
 				<td th:text="${#numbers.formatDecimal(item.record.price, 2, 'DEFAULT', 2, 'COMMA')} + ' €'"></td>
-				<td>
-					<a th:href="@{/plusone/{id} (id=${item.record.recordId})}"><button class="btn btn-primary" style="max-width:100%; width:45px;"> + </button></a>
-					<span th:text="${item.quantity}"></span>
-					<a th:href="@{/minusone/{id} (id=${item.record.recordId})}"><button class="btn btn-primary" style="max-width:100%; width:45px;"> - </button></a>
-				</td>
+				<td th:text="${item.quantity}"></td>
 				<td th:text="${#numbers.formatDecimal(item.totalCost, 2, 'DEFAULT', 2, 'COMMA')} + ' €'"></td>
-				<td><a th:href="@{/deleteitem/{id} (id=${item.record.recordId})}"><button class="btn btn-danger">Remove</button></a></td>
 			</tr>
 		</table>	
 		<p><b>Total sum: </b><span th:text="${#numbers.formatDecimal(sum, 1, 'DEFAULT', 2, 'COMMA')} + ' €'"></span></p>
-		<a th:href="@{/recordlist}" style="margin: 45px 20px 45px 0px;">
-			<button class="btn btn-primary">Continue shopping</button>
-		</a>
-		<a th:href="@{/saveshoppingcart}" style="margin: 45px 0px 45px 0px;"> 
-			<button class="btn btn-success" style="max-width:100%; width:160px;">Order</button>
+		<a th:href="@{/orders}" style="margin: 45px 20px 45px 0px;">
+			<button class="btn btn-primary">Back</button>
 		</a>
 	</div>
 	
 </body>
-
-
-<!-- <td th:text="${item.record.price} + ' €'"></td> -->
-<!-- <td th:text="${item.totalCost} + ' €'"></td> -->
-
-<!--  testataan formia -->
-<!--  <th>FORM</th> -->
-<!--<td><form><input th:value="${item.quantity}"></form></td> -->
-
-
-<!--  th:object="${item}" -->
-<!--  th:value="${item.quantity}" -->
-<!--  th:field="*{quantity}" -->
-
-
+</html>

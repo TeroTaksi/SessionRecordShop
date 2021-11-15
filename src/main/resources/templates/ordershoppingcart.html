@@ -8,12 +8,34 @@
 </head>
 <body>
 
+	<!-- header -->
+	<nav class="navbar navbar-inverse bg-dark fixed-top">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand text-light" th:href="@{/recordlist}" style="font-size:25px;">Record store</a>
+	    </div>
+	    <ul class="nav navbar-nav navbar-right">
+	    	<li class="nav-item">
+	    		<a th:href="@{/orders}" style="padding: 45px 0px 45px 0px;">
+	    			<button class="btn btn-primary">My orders</button>
+	    		</a>
+	    		<a th:href="@{/shoppingcart}" style="padding: 45px 0px 45px 0px;">
+	    			<button class="btn btn-primary">Shopping Cart</button>
+	    		</a>
+	    	</li>
+	    </ul>
+	  </div>
+	</nav>
+
 	<div class="container" style="margin: auto;">
 		<div style="margin: auto; margin-top: 40%; width: 50%; text-align: center;">
 			<h1>Thank you for your order.</h1>
 			<p>We have received your purchase order and will send you a confirmation email shortly.</p>
 			<a th:href="@{/recordlist}" >
 				<button class="btn btn-primary" style="background-color: black; border:2px">Back to store</button>
+			</a>
+			<a th:href="@{/orders}" >
+				<button class="btn btn-primary" style="background-color: black; border:2px">My orders</button>
 			</a>
 		</div>
 	</div>
