@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+
 @Entity
 public class ShopCartItem { //----------- S E S S I O N -------------------------------------
 	
@@ -16,15 +17,20 @@ public class ShopCartItem { //----------- S E S S I O N ------------------------
 	private int quantity;
 	private double totalCost;
 	
-	@ManyToOne 
+	@ManyToOne
 	@JoinColumn(name = "recordId") // kts. Record-luokan id
 	private Record record;
 	
-	public ShopCartItem(int quantity, double totalCost, Record record) {
+	@ManyToOne
+	@JoinColumn(name = "orderId") // kts. Record-luokan id
+	private MyOrder order;
+	
+	public ShopCartItem(int quantity, double totalCost, Record record, MyOrder order) {
 		super();
 		this.quantity = quantity;
 		this.totalCost = totalCost;
 		this.record = record;
+		this.order = order;
 	}
 	
 	public ShopCartItem() {
@@ -65,10 +71,18 @@ public class ShopCartItem { //----------- S E S S I O N ------------------------
 		this.record = record;
 	}
 
+	public MyOrder getOrder() {
+		return order;
+	}
+
+	public void setOrder(MyOrder order) {
+		this.order = order;
+	}
+
 	@Override
 	public String toString() {
 		return "ShopCartItem [shopCartItemId=" + shopCartItemId + ", quantity=" + quantity + ", totalCost=" + totalCost
-				+ ", record=" + record + "]";
+				+ ", record=" + record + ", order=" + order + "]";
 	}
-	
+
 }

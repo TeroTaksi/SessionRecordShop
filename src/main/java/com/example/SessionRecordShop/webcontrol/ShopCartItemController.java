@@ -2,7 +2,9 @@
 package com.example.SessionRecordShop.webcontrol;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,25 +15,32 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.example.SessionRecordShop.domain.MyOrder;
 import com.example.SessionRecordShop.domain.Record;
 import com.example.SessionRecordShop.domain.RecordRepository;
 import com.example.SessionRecordShop.domain.ShopCartItem;
-//import com.example.SessionRecordShop.domain.ShopCartItemRepository;
+import com.example.SessionRecordShop.domain.ShopCartItemRepository;
+import com.example.SessionRecordShop.domain.OrderRepository;
+
+
 
 
 
 @Controller
 public class ShopCartItemController { //----------- S E S S I O N -------------------------------------
 	
-//	@Autowired
-//	private ShopCartItemRepository shopCartItemRepository;
+
+	@Autowired
+	private HttpSession session;
 	
 	@Autowired
 	private RecordRepository recordRepository;
 	
 	@Autowired
-	private HttpSession session;
+	private ShopCartItemRepository shopCartItemRepository;
 	
+	@Autowired
+	private OrderRepository orderRepository;
 	
 	
 	// LIST shopping cart
@@ -64,10 +73,10 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 		
 		if(cartItems == null) {
 			cartItems = new ArrayList<ShopCartItem>();
-			session.setAttribute("cartItems", cartItems);
+			session.setAttribute("cartItems", cartItems);		
 			for(Record record : records) {
 				if (record.getRecordId() == recordId) {
-					cartItems.add(new ShopCartItem(1, record.getPrice(), record));
+					cartItems.add(new ShopCartItem(1, record.getPrice(), record, new MyOrder() )); // Order(String orderNumber, Date date)
 					return "redirect:/recordlist";
 				}
 			}
@@ -88,7 +97,7 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 		if(idFounded == false) {
 			for(Record record : records) {
 				if (record.getRecordId() == recordId) {
-					cartItems.add(new ShopCartItem(1, record.getPrice(), record));
+					cartItems.add(new ShopCartItem(1, record.getPrice(), record, new MyOrder() )); // Order(String orderNumber, Date date)
 					break;
 				}
 			}
@@ -149,10 +158,57 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 		return "redirect:../shoppingcart";
 	}
 	
+	// SAVE ShopCartItems to shopCartItemRepository
+	@RequestMapping(value = "/saveshoppingcart", method = RequestMethod.GET)
+	public String saveShoppingCart(Model model) {	
+		@SuppressWarnings("unchecked")	
+		List<ShopCartItem> cartItems = (List<ShopCartItem>) session.getAttribute("cartItems");
+		
+		if(cartItems != null) {
+			// generate order number & date
+			String orderNumber = UUID.randomUUID().toString().replace("-", "");
+			Date date = new Date();
+			
+			// save new Order to repository
+			MyOrder newOrder = new MyOrder(orderNumber, date);
+			orderRepository.save(newOrder);
+			
+			// get saved Order from repository & save session items to shopCartItemRepository with orderNumber and date & clear session
+			ArrayList<MyOrder> orders = (ArrayList<MyOrder>) orderRepository.findAll();
+			
+			for(MyOrder order : orders) {
+				if(order.getOrderNumber() == orderNumber && order.getDate() == date) {
+					for(ShopCartItem item : cartItems) {
+						ShopCartItem saveItem = new ShopCartItem(item.getQuantity(),item.getTotalCost(),item.getRecord(), newOrder);
+						shopCartItemRepository.save(saveItem);
+					}
+				}
+			}
+			cartItems.clear();
+			return "order";
+		} 
+		return "redirect:/shoppingcart";
+	}
+	
 }
 
 /*
  
+  ------- CRUD FUNCTIONS ------------------------------------------------------------------------------------------------
+ Methods inherited from interface org.springframework.data.repository.CrudRepository
  
+ count();
+ delete(T entity);
+ deleteAll()
+ deleteAll(Iterable<? extends ID> ids);
+ deleteAll(Iterable<? extends T> entities);
+ deleteAllById(id);
+ deleteById(id);
+ existsById(id);
+ findById(id);
+ save(x);
+ 
+ https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaRepository.html
+------------------------------------------------------------------------------------------------------------------------
  
 */

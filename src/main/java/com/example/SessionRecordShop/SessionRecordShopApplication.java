@@ -1,5 +1,6 @@
 package com.example.SessionRecordShop;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -26,9 +27,11 @@ public class SessionRecordShopApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner recordShop(RecordRepository recordRepository, FormatRepository formatRespostory) { // , ShopCartItemRepository shopCartItemRepository
+	public CommandLineRunner recordShop(RecordRepository recordRepository, FormatRepository formatRespostory) { // , ShopCartItemRepository shopCartItemRepository, OrderRepository orderRepository
 		
 		return (args) -> {
+			
+
 			
 			Format seven = new Format("7 inch");
 			Format twelve = new Format("12 inch");
@@ -54,6 +57,18 @@ public class SessionRecordShopApplication {
 			recordRepository.save(record4);
 			recordRepository.save(record5);
 			recordRepository.save(record6);
+//			
+//			
+//			Order order = new Order("ordernumber", new Date());
+//			orderRepository.save(order);
+//			
+//			ShopCartItem shopCartItem = new ShopCartItem(1,10, record1, order);
+//			shopCartItemRepository.save(shopCartItem);
+
+			
+
+			
+
 //			
 //			ShopCartItem  shopCartItem1 = new ShopCartItem(0, 0, record1);
 //			shopCartItemRepository.save(shopCartItem1);

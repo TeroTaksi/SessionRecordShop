@@ -90,15 +90,21 @@ public class RecordController { //----------- S E S S I O N --------------------
 	
 /*
 
-//model.addAttribute("record", recordRepository.findById(recordId));
-//ArrayList<Record> recordsById = (ArrayList<Record>) recordRepository.findById(recordId);
-
-	
-//	// List shopping cart (Records where quantity > 0)
-//	@RequestMapping(value = "/shoppingcart", method = RequestMethod.GET) // Tämä metodi on listalle
-//	public String addCart(Model model) {
-//		model.addAttribute("records", recordRepository.findAll());
-//		return "shoppingcart"; // .html
-//	}
+ ------- CRUD FUNCTIONS ------------------------------------------------------------------------------------------------
+ Methods inherited from interface org.springframework.data.repository.CrudRepository
+ 
+ count();
+ delete(T entity);
+ deleteAll()
+ deleteAll(Iterable<? extends ID> ids);
+ deleteAll(Iterable<? extends T> entities);
+ deleteAllById(id);
+ deleteById(id);
+ existsById(id);
+ findById(id);
+ save(x);
+ 
+ https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaRepository.html
+------------------------------------------------------------------------------------------------------------------------
 
 */

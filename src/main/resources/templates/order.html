@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> <!-- thymeleaf! -->
+<head>
+	<title>Record shop - Shopping cart</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+
+	<div class="container" style="margin: auto;">
+		<div style="margin: auto; margin-top: 40%; width: 50%; text-align: center;">
+			<h1>Thank you for your order.</h1>
+			<p>We have received your purchase order and will send you a confirmation email shortly.</p>
+			<a th:href="@{/recordlist}" >
+				<button class="btn btn-primary" style="background-color: black; border:2px">Back to store</button>
+			</a>
+		</div>
+	</div>
+	
+</body>
