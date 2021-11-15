@@ -6,7 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+//import javax.servlet.http.HttpServletRequest; // WHAT?
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,7 +47,7 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 	
 	// LIST shopping cart
 	@RequestMapping(value = "/shoppingcart", method = RequestMethod.GET)
-	public String addCart(Model model) {
+	public String listShoppingCart(Model model) {
 		@SuppressWarnings("unchecked")
 		List<ShopCartItem> cartItems = (List<ShopCartItem>) session.getAttribute("cartItems");
 		
@@ -58,7 +60,7 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 			model.addAttribute("cartItems", cartItems);
 			return "shoppingcart"; // .html
 		}
-
+		model.addAttribute("cartItems", cartItems); // WTF?
 		model.addAttribute("sum", 0.00);
 		return "shoppingcart"; // .html		
 	}
@@ -158,13 +160,18 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 		return "redirect:../shoppingcart";
 	}
 	
-	// SAVE ShopCartItems to shopCartItemRepository
+	// SAVE ShopCartItems to shopCartItemRepository --> Order button
+
 	@RequestMapping(value = "/saveshoppingcart", method = RequestMethod.GET)
 	public String saveShoppingCart(Model model) {	
 		@SuppressWarnings("unchecked")	
 		List<ShopCartItem> cartItems = (List<ShopCartItem>) session.getAttribute("cartItems");
-		
+
 		if(cartItems != null) {
+			// if session is true, but cart is empty
+			if(cartItems.size()==0) {
+				return "redirect:/shoppingcart";
+			}
 			// generate order number & date
 			String orderNumber = UUID.randomUUID().toString().replace("-", "");
 			Date date = new Date();
@@ -185,8 +192,8 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 				}
 			}
 			cartItems.clear();
-			return "order";
-		} 
+			return "ordershoppingcart";
+		}
 		return "redirect:/shoppingcart";
 	}
 	
