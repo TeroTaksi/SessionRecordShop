@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -92,5 +93,32 @@ public class FormatController { //----------- S E S S I O N --------------------
 	public @ResponseBody Optional<Format> findFormatByIdRest(@PathVariable("id") Long formatId) {
 		return formatRepository.findById(formatId);
 	}
+	
+	// REST - SAVE Format
+	@RequestMapping(value="/formats", method = RequestMethod.POST)
+	public @ResponseBody Format saveFormatRest(@RequestBody Format format) {
+		return formatRepository.save(format);
+	}
+	
+	// REST - EDIT Format by id
+//	@RequestMapping(value="/formats/edit/{id}", method = RequestMethod.POST)
+//	public @ResponseBody Optional<Format> editFormatByIdRest(@PathVariable("id") Long formatId) {
+//		Format format = (Optional<Format>) formatRepository.findById(formatId);
+//		return Optional.empty();
+//	}
+	
+	//  (Optional<Format>)
+	// Format format = 
+	
+	// REST - DELETE Format
+//	@RequestMapping(value="/formats/delete/{id}", method = RequestMethod.DELETE)
+//	public @ResponseBody Optional<Format> deleteFormatRest(@PathVariable("id") Long formatId) {
+//		formatRepository.deleteById(formatId);
+//		return "";
+//	}
+	
+	
+	
+
 
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -208,6 +209,12 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 	@RequestMapping(value="/shopcartitems/{id}", method = RequestMethod.GET)
 	public @ResponseBody Optional<ShopCartItem> findShopCartItemByIdRest(@PathVariable("id") Long shopCartItemId) {
 		return shopCartItemRepository.findById(shopCartItemId);
+	}
+	
+	// REST - SAVE ShopCartItem
+	@RequestMapping(value="/shopcartitems", method = RequestMethod.POST)
+	public @ResponseBody ShopCartItem saveShopCartItemRest(@RequestBody ShopCartItem shopCartItem) {
+		return shopCartItemRepository.save(shopCartItem);
 	}
 	
 }

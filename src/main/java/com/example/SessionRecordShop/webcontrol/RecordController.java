@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -101,6 +102,12 @@ public class RecordController { //----------- S E S S I O N --------------------
 	@RequestMapping(value="/records/{id}", method = RequestMethod.GET)
 	public @ResponseBody Optional<Record> findRecordByIdRest(@PathVariable("id") Long recordId) {
 		return recordRepository.findById(recordId);
+	}
+	
+	// REST - SAVE Record
+	@RequestMapping(value="/records", method = RequestMethod.POST)
+	public @ResponseBody Record saveRecordRest(@RequestBody Record record) {
+		return recordRepository.save(record);
 	}
 
 }
