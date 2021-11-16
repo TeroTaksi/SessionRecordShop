@@ -13,9 +13,8 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-//
-//import hh.swd20.recordshop.domain.Format;
-//import hh.swd20.recordshop.domain.ShopCartItem;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -52,6 +51,7 @@ public class Record { //----------- S E S S I O N ------------------------------
 	private String albumCover;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="record")
+	@JsonIgnore
 	private List<ShopCartItem> ShopCartItem;
 	
 	@ManyToOne

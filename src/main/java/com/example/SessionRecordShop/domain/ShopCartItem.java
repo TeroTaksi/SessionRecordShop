@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class ShopCartItem { //----------- S E S S I O N -------------------------------------
@@ -18,10 +20,12 @@ public class ShopCartItem { //----------- S E S S I O N ------------------------
 	private double totalCost;
 	
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "recordId") // kts. Record-luokan id
 	private Record record;
 	
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "orderId") // kts. Record-luokan id
 	private MyOrder order;
 	

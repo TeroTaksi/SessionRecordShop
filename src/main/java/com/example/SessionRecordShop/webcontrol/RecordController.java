@@ -1,6 +1,9 @@
 // http://localhost:8080/recordlist
 package com.example.SessionRecordShop.webcontrol;
 
+import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +13,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.SessionRecordShop.domain.Record;
 import com.example.SessionRecordShop.domain.RecordRepository;
 import com.example.SessionRecordShop.domain.FormatRepository;
-
 
 
 @Controller
@@ -83,6 +86,21 @@ public class RecordController { //----------- S E S S I O N --------------------
 	public String deleteRecord(@PathVariable("id") Long recordId, Model model) {
 		recordRepository.deleteById(recordId);
 		return "redirect:../recordlist";
+	}
+	
+	//------------- R E S T -----------------------------------------------------
+	
+	// REST - LIST all Records (localhost:8080/records) - @ResponseBody: List<Book> --> JSON
+	@RequestMapping(value="/records", method = RequestMethod.GET)
+	public @ResponseBody List<Record> recordListRest() {
+		// return: Iterable<T> to List<Record>
+		return (List<Record>) recordRepository.findAll(); 
+	}
+	
+	// REST - get Format by id
+	@RequestMapping(value="/records/{id}", method = RequestMethod.GET)
+	public @ResponseBody Optional<Record> findRecordByIdRest(@PathVariable("id") Long recordId) {
+		return recordRepository.findById(recordId);
 	}
 
 }

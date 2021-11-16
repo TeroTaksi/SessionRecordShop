@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class MyOrder { //----------- S E S S I O N -------------------------------------
 	
@@ -24,6 +26,7 @@ public class MyOrder { //----------- S E S S I O N -----------------------------
 	private Date date;
 	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="order")
+	@JsonIgnore
 	private List<ShopCartItem> ShopCartItemList;
 	
 	public MyOrder(String orderNumber, Date date) {

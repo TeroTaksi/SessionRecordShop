@@ -4,6 +4,7 @@ package com.example.SessionRecordShop.webcontrol;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.SessionRecordShop.domain.MyOrder;
 import com.example.SessionRecordShop.domain.Record;
@@ -21,9 +23,6 @@ import com.example.SessionRecordShop.domain.RecordRepository;
 import com.example.SessionRecordShop.domain.ShopCartItem;
 import com.example.SessionRecordShop.domain.ShopCartItemRepository;
 import com.example.SessionRecordShop.domain.OrderRepository;
-
-
-
 
 
 @Controller
@@ -43,7 +42,7 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 	private OrderRepository orderRepository;
 	
 	
-	// LIST shopping cart
+	// LIST shopping cart & SUM of the whole shopping cart 
 	@RequestMapping(value = "/shoppingcart", method = RequestMethod.GET)
 	public String listShoppingCart(Model model) {
 		@SuppressWarnings("unchecked")
@@ -58,32 +57,32 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 			model.addAttribute("cartItems", cartItems);
 			return "shoppingcart"; // .html
 		}
-		model.addAttribute("cartItems", cartItems); // WTF?
-		model.addAttribute("sum", 0.00);
+		model.addAttribute("cartItems", cartItems);
+		model.addAttribute("sum", 0.00); // Send numeric value zero, otherwise sum is "null"
 		return "shoppingcart"; // .html		
 	}
 	
-	// ADD record to shopping cart by id -> shopCartItemRepository
+	// ADD record to shopping cart (session) by id -> shopCartItemRepository
 	@RequestMapping(value = "/addcart/{id}", method = RequestMethod.GET)
 	public String addCart(@PathVariable("id") Long recordId, Model model) {	
-		
 		@SuppressWarnings("unchecked")	
 		List<ShopCartItem> cartItems = (List<ShopCartItem>) session.getAttribute("cartItems");
 		ArrayList<Record> records = (ArrayList<Record>) recordRepository.findAll();
 		
+		// if session does not exist, create session & add record to session (shopping cart).  Compare recordId to RecordRepository id`s to get a match
 		if(cartItems == null) {
 			cartItems = new ArrayList<ShopCartItem>();
 			session.setAttribute("cartItems", cartItems);		
 			for(Record record : records) {
 				if (record.getRecordId() == recordId) {
-					cartItems.add(new ShopCartItem(1, record.getPrice(), record, new MyOrder() )); // Order(String orderNumber, Date date)
+					cartItems.add(new ShopCartItem(1, record.getPrice(), record, new MyOrder() ));
 					return "redirect:/recordlist";
 				}
 			}
 		}
 		
+		// session exist. If session contains recordId -> update quantity and totalCost  
 		boolean idFounded = false;
-		
 		for(ShopCartItem item : cartItems) {
 			if (item.getRecord().getRecordId() == recordId) {
 				int quantity = item.getQuantity();
@@ -93,11 +92,12 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 				return "redirect:/recordlist";
 			}
 		}
-
+		
+		// if session exist but session does not contain recordId --> add new record to session.
 		if(idFounded == false) {
 			for(Record record : records) {
 				if (record.getRecordId() == recordId) {
-					cartItems.add(new ShopCartItem(1, record.getPrice(), record, new MyOrder() )); // Order(String orderNumber, Date date)
+					cartItems.add(new ShopCartItem(1, record.getPrice(), record, new MyOrder() ));
 					break;
 				}
 			}
@@ -105,7 +105,7 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 		return "redirect:/recordlist";
 	}
 
-	// PLUS ONE: Edit item quantity by increments in shopping cart (quantity +1) --> "/plusone/{recordId}", koska shopCartteja ei ole tallennettu repoon, joten ei ole Id:tä
+	// PLUS ONE: Update item quantity by increments in shopping cart (quantity +1) --> "/plusone/{recordId}", koska shopCartteja ei ole tallennettu repoon, joten ei ole Id:tä
 	@RequestMapping(value = "/plusone/{id}", method = RequestMethod.GET)
 	public String addRecordQuantity(@PathVariable("id") Long idFromRecord) {		
 		@SuppressWarnings("unchecked")	
@@ -122,7 +122,7 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 		return "redirect:/shoppingcart";
 	}
 	
-	// SUBTRACT ONE: Edit item quantity by increments in shopping cart (quantity -1) --> "/minusone/{recordId}", koska shopCartteja ei ole tallennettu repoon, joten ei ole Id:tä
+	// SUBTRACT ONE: Update item quantity by increments in shopping cart (quantity -1) --> "/minusone/{recordId}", koska shopCartteja ei ole tallennettu repoon, joten ei ole Id:tä
 	@RequestMapping(value = "/minusone/{id}", method = RequestMethod.GET)
 	public String subtractRecordQuantity(@PathVariable("id") Long idFromRecord) {	
 		@SuppressWarnings("unchecked")	
@@ -147,6 +147,7 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 		@SuppressWarnings("unchecked")	
 		List<ShopCartItem> cartItems = (List<ShopCartItem>) session.getAttribute("cartItems");
 		
+		// loop session to get recordId`s index -> remove index from session
 		int i = 0;
 		for(ShopCartItem item : cartItems) {
 			if(item.getRecord().getRecordId() == idFromRecord) {
@@ -159,15 +160,14 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 	}
 	
 	// SAVE ShopCartItems to shopCartItemRepository --> Order button
-
 	@RequestMapping(value = "/saveshoppingcart", method = RequestMethod.GET)
 	public String saveShoppingCart(Model model) {	
 		@SuppressWarnings("unchecked")	
 		List<ShopCartItem> cartItems = (List<ShopCartItem>) session.getAttribute("cartItems");
 
 		if(cartItems != null) {
-			// if session is true, but cart is empty
-			if(cartItems.size()==0) {
+			// if session exists, but cart is empty
+			if(cartItems.size() == 0) {
 				return "redirect:/shoppingcart";
 			}
 			// generate order number & date
@@ -193,6 +193,21 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 			return "ordershoppingcart";
 		}
 		return "redirect:/shoppingcart";
+	}
+	
+	//------------- R E S T -----------------------------------------------------
+	
+	// REST - LIST all ShopCartItems (localhost:8080/shopcartitems) - @ResponseBody: List<ShopCartItem> --> JSON
+	@RequestMapping(value="/shopcartitems", method = RequestMethod.GET)
+	public @ResponseBody List<ShopCartItem> shopCartItemListRest() {
+		// return: Iterable<T> to List<ShopCartItem>
+		return (List<ShopCartItem>) shopCartItemRepository.findAll(); 
+	}
+	
+	// REST - get ShopCartItem by id
+	@RequestMapping(value="/shopcartitems/{id}", method = RequestMethod.GET)
+	public @ResponseBody Optional<ShopCartItem> findShopCartItemByIdRest(@PathVariable("id") Long shopCartItemId) {
+		return shopCartItemRepository.findById(shopCartItemId);
 	}
 	
 }

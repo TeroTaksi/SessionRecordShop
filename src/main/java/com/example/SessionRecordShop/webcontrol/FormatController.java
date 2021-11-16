@@ -1,5 +1,8 @@
 package com.example.SessionRecordShop.webcontrol;
 
+import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +12,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.SessionRecordShop.domain.Format;
 import com.example.SessionRecordShop.domain.FormatRepository;
-
-
 
 
 @Controller
@@ -74,6 +76,21 @@ public class FormatController { //----------- S E S S I O N --------------------
 	public String deleteFormat(@PathVariable("id") Long formatId, Model model) {
 		formatRepository.deleteById(formatId);
 		return "redirect:/formatslist";
+	}
+	
+	//------------- R E S T -----------------------------------------------------
+	
+	// REST - LIST all Formats (localhost:8080/formats) - @ResponseBody: List<Format> --> JSON
+	@RequestMapping(value="/formats", method = RequestMethod.GET)
+	public @ResponseBody List<Format> formatListRest() {
+		// return: Iterable<T> to List<Record>
+		return (List<Format>) formatRepository.findAll(); 
+	}
+	
+	// REST - get Format by id
+	@RequestMapping(value="/formats/{id}", method = RequestMethod.GET)
+	public @ResponseBody Optional<Format> findFormatByIdRest(@PathVariable("id") Long formatId) {
+		return formatRepository.findById(formatId);
 	}
 
 }
