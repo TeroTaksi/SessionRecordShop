@@ -66,7 +66,7 @@ public class Format { //----------- S E S S I O N ------------------------------
 
 	@Override
 	public String toString() {
-		return "Format [formatId=" + formatId + ", formatName=" + formatName + ", records=" + records + "]";
+		return "Format [formatId=" + formatId + ", formatName=" + formatName + "]";
 	}
 
 }

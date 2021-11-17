@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,14 +24,14 @@ public class OrderController {
 	@Autowired
 	private OrderRepository orderRepository;
 	
-	// LIST shopping cart
+	// LIST MyOrders
 	@RequestMapping(value = "/orderlist", method = RequestMethod.GET)
 	public String listOrder(Model model) {
 		model.addAttribute("orders", orderRepository.findAll());
 		return "orders"; //.html	
 	}
 	
-	// LIST Order details --> ordered records & sum of order
+	// LIST MyOrder details --> ordered records & sum of order
 	@RequestMapping(value = "/order/{id}", method = RequestMethod.GET)
 	public String orderDetails(@PathVariable("id") Long orderId, Optional<MyOrder> myOrder, Model model) {
 		// Optional<MyOrder> myOrder
@@ -46,6 +47,14 @@ public class OrderController {
 
 		return "orderdetails"; //.html	
 
+	}
+	
+	// DELETE MyOrder by id
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value = "/deleteorder/{id}", method = RequestMethod.GET)
+	public String deleteRecord(@PathVariable("id") Long orderId, Model model) {
+		orderRepository.deleteById(orderId);
+		return "redirect:../orderlist";
 	}
 	
 	//------------- R E S T -----------------------------------------------------

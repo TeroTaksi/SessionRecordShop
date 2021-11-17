@@ -156,8 +156,7 @@ public class Record { //----------- S E S S I O N ------------------------------
 	@Override
 	public String toString() {
 		return "Record [recordId=" + recordId + ", artist=" + artist + ", album=" + album + ", label=" + label
-				+ ", year=" + year + ", price=" + price + ", albumCover=" + albumCover + ", ShopCartItem="
-				+ ShopCartItem + ", format=" + format + "]";
+				+ ", year=" + year + ", price=" + price + ", albumCover=" + albumCover + ", format=" + format + "]";
 	}
 	
 }

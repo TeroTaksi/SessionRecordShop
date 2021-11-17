@@ -10,6 +10,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,7 +64,7 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 		return "shoppingcart"; // .html		
 	}
 	
-	// ADD record to shopping cart (session) by id -> shopCartItemRepository
+	// ADD Record to shopping cart (session) by id -> shopCartItemRepository
 	@RequestMapping(value = "/addcart/{id}", method = RequestMethod.GET)
 	public String addCart(@PathVariable("id") Long recordId, Model model) {	
 		@SuppressWarnings("unchecked")	
@@ -161,6 +162,7 @@ public class ShopCartItemController { //----------- S E S S I O N --------------
 	}
 	
 	// SAVE ShopCartItems to shopCartItemRepository --> Order button
+	@PreAuthorize("hasAnyAuthority('USER','ADMIN')")
 	@RequestMapping(value = "/saveshoppingcart", method = RequestMethod.GET)
 	public String saveShoppingCart(Model model) {	
 		@SuppressWarnings("unchecked")	

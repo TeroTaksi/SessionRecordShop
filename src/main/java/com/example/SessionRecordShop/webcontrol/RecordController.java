@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,8 +31,11 @@ public class RecordController { //----------- S E S S I O N --------------------
 	@Autowired
 	private FormatRepository formatRepository;
 	
-//	@Autowired
-//	private ShopCartItemRepository shopCartItemRepository;
+	// LOGIN form
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login() {
+		return "login"; // .html
+	}
 	
 	// LIST all records - localhost:8080/recordlist
 	@RequestMapping(value = {"/", "/recordlist"}, method = RequestMethod.GET) // both end points
@@ -40,28 +44,32 @@ public class RecordController { //----------- S E S S I O N --------------------
 		return "recordlist"; // .html
 	}
 	
+	// --------validointi hässäkkä---------------
 	// SEND EMPTY Record OBJECT to new Record form
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/addrecord", method = RequestMethod.GET)
 	public String addRecord(Model model) {
-		model.addAttribute("newRecord", new Record());
+		model.addAttribute("record", new Record());
 		model.addAttribute("formats", formatRepository.findAll());
 		return "addrecord"; // .html
 	}
-	
+	// --------validointi hässäkkä---------------
 	// SAVE Record from /saverecord
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/saverecord", method = RequestMethod.POST)
-	public String saveRecord(@Valid Record newRecord, BindingResult bindingResult, Model model) {
+	public String saveRecord(@Valid Record record, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) { // validation errors
-			model.addAttribute("newRecord", newRecord);
+			model.addAttribute("record", record);
 			model.addAttribute("formats", formatRepository.findAll());
 			return "addrecord";  // .html
 		} else { // no validation errors
-			recordRepository.save(newRecord);
+			recordRepository.save(record);
 			return "redirect:/recordlist"; // .html
 		}
 	}
 	
 	// EDIT Record by id
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/editrecord/{id}", method = RequestMethod.GET)
 	public String editRecord(@PathVariable("id") Long recordId, Model model) {
 		model.addAttribute("editRecord", recordRepository.findById(recordId));
@@ -70,6 +78,7 @@ public class RecordController { //----------- S E S S I O N --------------------
 	}
 	
 	// SAVE EDITED Record from /editrecord
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/editrecord/{id}", method = RequestMethod.POST)
 	public String saveEditedRecord(@Valid Record editRecord, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) { // validation errors
@@ -83,6 +92,7 @@ public class RecordController { //----------- S E S S I O N --------------------
 	}
 	
 	// DELETE Record by id
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/deleterecord/{id}", method = RequestMethod.GET)
 	public String deleteRecord(@PathVariable("id") Long recordId, Model model) {
 		recordRepository.deleteById(recordId);

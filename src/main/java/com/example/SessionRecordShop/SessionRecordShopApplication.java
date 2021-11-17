@@ -12,6 +12,9 @@ import com.example.SessionRecordShop.domain.Format;
 import com.example.SessionRecordShop.domain.FormatRepository;
 import com.example.SessionRecordShop.domain.Record;
 import com.example.SessionRecordShop.domain.RecordRepository;
+import com.example.SessionRecordShop.domain.User;
+import com.example.SessionRecordShop.domain.UserRepository;
+
 
 
 
@@ -27,12 +30,11 @@ public class SessionRecordShopApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner recordShop(RecordRepository recordRepository, FormatRepository formatRespostory) { // , ShopCartItemRepository shopCartItemRepository, OrderRepository orderRepository
+	public CommandLineRunner recordShop(RecordRepository recordRepository, FormatRepository formatRespostory, UserRepository userRepository) { // , ShopCartItemRepository shopCartItemRepository, OrderRepository orderRepository
 		
 		return (args) -> {
 			
-
-			
+			// Format(String formatName)
 			Format seven = new Format("7 inch");
 			Format twelve = new Format("12 inch");
 			Format lp = new Format("LP");
@@ -41,6 +43,11 @@ public class SessionRecordShopApplication {
 			formatRespostory.save(twelve);
 			formatRespostory.save(lp);
 			formatRespostory.save(cd);
+			
+			log.info("fetch all Records");
+			for (Format format : formatRespostory.findAll()) {
+				log.info(format.toString());
+			}
 
 			
 			log.info("save some Records");
@@ -57,31 +64,21 @@ public class SessionRecordShopApplication {
 			recordRepository.save(record4);
 			recordRepository.save(record5);
 			recordRepository.save(record6);
-//			
-//			
-//			Order order = new Order("ordernumber", new Date());
-//			orderRepository.save(order);
-//			
-//			ShopCartItem shopCartItem = new ShopCartItem(1,10, record1, order);
-//			shopCartItemRepository.save(shopCartItem);
+			
+			log.info("fetch all Records");
+			for (Record record : recordRepository.findAll()) {
+				log.info(record.toString());
+			}
 
 			
-
-			
-
-//			
-//			ShopCartItem  shopCartItem1 = new ShopCartItem(0, 0, record1);
-//			shopCartItemRepository.save(shopCartItem1);
-//			ShopCartItem  shopCartItem2 = new ShopCartItem(0, 0, record2);
-//			shopCartItemRepository.save(shopCartItem2);
-//			ShopCartItem  shopCartItem3 = new ShopCartItem(0, 0, record3);
-//			shopCartItemRepository.save(shopCartItem3);
-//			ShopCartItem  shopCartItem4 = new ShopCartItem(0, 0, record4);
-//			shopCartItemRepository.save(shopCartItem4);
-//			ShopCartItem  shopCartItem5 = new ShopCartItem(0, 0, record5);
-//			shopCartItemRepository.save(shopCartItem5);
-//			ShopCartItem  shopCartItem6 = new ShopCartItem(0, 0, record6);
-//			shopCartItemRepository.save(shopCartItem6);
+			log.info("save a couple of Users");
+			// user/user, juuseri/juuseri, admin/admin
+			User user1 = new User("user", "$2a$10$oFFg3msit/cvJFOst0dhiettAgzmTQgPXFb60QqrGr.VaS6uaq7vy", "user@email.com", "USER");
+			User user2 = new User("juuseri", "$2a$10$1etPZJ5HL9K578az.9kqyuXvnAcwsLl/m58VdG7EtGyJLBa8IXYqS", "juuseri@email.com", "USER");
+			User user3 = new User("admin", "$2a$10$nK8KtlEagTE1fNz7o0DgPuDToA5d.JvHiPNRpbjRTRYuYyqSc2cPC", "admin@email.com", "ADMIN");
+			userRepository.save(user1);
+			userRepository.save(user2);
+			userRepository.save(user3);
 
 		};
 	}

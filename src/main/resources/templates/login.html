@@ -1,0 +1,36 @@
+<!-- Bookstore -->
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> <!-- thymeleaf: th & security: sec -->
+<head>
+	<title>Bookstore</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+	<div class="container" style="max-width:500px; margin-top: 5%; padding: 0px;">
+		<h1 style="text-align: center; margin-bottom: 25px;">Login</h1>
+		<h5 th:if="${param.error}" style="text-align: center; color: red">Invalid username and password.</h5>
+		<h5 th:if="${param.logout}" style="text-align: center; color: green">You have been logged out.</h5>
+		<form th:action="@{/login}" method="post">
+			<div class="form-group">
+				<label>User Name: </label>
+				<input type="text" name="username" placeholder="User name" class="form-control" />
+			</div><br>
+			<div class="form-group">
+				<label> Password: </label>
+				<input type="password" name="password" placeholder="Password" class="form-control" />
+			</div><br>
+			<div>
+				<input type="submit" value="Sign In" class="btn btn-primary" style="width:500px;"/>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+
+<!--
+
+<p th:if="${param.logout}">You have been logged out.</p>
+
+-->

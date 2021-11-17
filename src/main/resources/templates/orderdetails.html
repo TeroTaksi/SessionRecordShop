@@ -17,12 +17,19 @@
 	    </div>
 	    <ul class="nav navbar-nav navbar-right">
 	    	<li class="nav-item">
-	    		<a th:href="@{/orderlist}" style="padding: 45px 0px 45px 0px;">
+	    		<a sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:href="@{/orderlist}" style="padding: 45px 0px 45px 0px;">
 	    			<button class="btn btn-primary">My orders</button>
 	    		</a>
 	    		<a th:href="@{/shoppingcart}" style="padding: 45px 0px 45px 0px;">
 	    			<button class="btn btn-primary">Shopping Cart</button>
 	    		</a>
+	    		<!-- Sign in / Sign out -->
+	    		<form sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:action="@{/logout}" method="post" style="margin: 0; padding: 0; display: inline;">
+		     		<span><input type="submit" value="Sign Out" class="btn btn-primary" /></span>
+		     	</form>
+		     	 <form sec:authorize="isAnonymous()" th:href="@{/login}" method="post" style="margin: 0; padding: 0; display: inline;">
+		     		<span><input type="submit" value="Sign in" class="btn btn-primary" /></span>
+		     	</form>
 	    	</li>
 	    </ul>
 	  </div>
@@ -52,7 +59,7 @@
 			</tr>
 		</table>	
 		<p><b>Total sum: </b><span th:text="${#numbers.formatDecimal(sum, 1, 'DEFAULT', 2, 'COMMA')} + ' €'"></span></p>
-		<a th:href="@{/orders}" style="margin: 45px 20px 45px 0px;">
+		<a th:href="@{/orderlist}" style="margin: 45px 20px 45px 0px;">
 			<button class="btn btn-primary">Back</button>
 		</a>
 	</div>

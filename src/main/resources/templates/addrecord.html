@@ -1,7 +1,8 @@
 <!-- S E S S I ON -->
 <!-- http://localhost:8080/addrecord -->
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org"> <!-- thymeleaf! -->
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"><!-- thymeleaf! -->
 <head>
 	<title>Record store - Add record</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -17,9 +18,19 @@
 	    </div>
 	    <ul class="nav navbar-nav navbar-right">
 	    	<li class="nav-item">
+	    		<a sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:href="@{/orderlist}" style="padding: 45px 0px 45px 0px;">
+	    			<button class="btn btn-primary">My orders</button>
+	    		</a>
 	    		<a th:href="@{/shoppingcart}" style="padding: 45px 0px 45px 0px;">
 	    			<button class="btn btn-primary">Shopping Cart</button>
 	    		</a>
+	    		<!-- Sign in / Sign out -->
+	    		<form sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:action="@{/logout}" method="post" style="margin: 0; padding: 0; display: inline;">
+		     		<span><input type="submit" value="Sign Out" class="btn btn-primary" /></span>
+		     	</form>
+		     	 <form sec:authorize="isAnonymous()" th:href="@{/login}" method="post" style="margin: 0; padding: 0; display: inline;">
+		     		<span><input type="submit" value="Sign in" class="btn btn-primary" /></span>
+		     	</form>
 	    	</li>
 	    </ul>
 	  </div>
@@ -27,7 +38,7 @@
 	
 	<div class="container" style="margin-top: 4%;">
 		<h1>Add record</h1>
-		<form th:object="${newRecord}" action="#" th:action="@{/saverecord}" method="post">
+		<form th:object="${record}" action="#" th:action="@{/saverecord}" method="post">
 			<div class="form-group">
 				<label for="artist">Artist</label>
 				<input type="text" id="artist" th:field="*{artist}" class="form-control" />

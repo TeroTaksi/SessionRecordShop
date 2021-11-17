@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +27,7 @@ public class FormatController { //----------- S E S S I O N --------------------
 	private FormatRepository formatRepository;
 	
 	// LIST all Formats --> localhost:8080/formatslist
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/formatslist", method = RequestMethod.GET)
 	public String listAllFormats(Model model) {
 		model.addAttribute("formats", formatRepository.findAll());
@@ -33,6 +35,7 @@ public class FormatController { //----------- S E S S I O N --------------------
 	}
 	
 	// SEND EMPTY Format object to ADD format form --> /addformat
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/addformat", method = RequestMethod.GET)
 	public String addFormat(Model model) {
 		model.addAttribute("format", new Format());
@@ -40,6 +43,7 @@ public class FormatController { //----------- S E S S I O N --------------------
 	}
 	
 	// SAVE Format from form --> /addformat
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/saveformat", method = RequestMethod.POST)
 	public String saveFormat(@Valid Format format, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) { // validation errors
@@ -53,6 +57,7 @@ public class FormatController { //----------- S E S S I O N --------------------
 	}
 	
 	// EDIT Format by id
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/editformat/{id}", method = RequestMethod.GET)
 	public String editFormat(@PathVariable("id") Long formatId, Model model) {
 		model.addAttribute("editFormat", formatRepository.findById(formatId));
@@ -60,6 +65,7 @@ public class FormatController { //----------- S E S S I O N --------------------
 	}
 	
 	// SAVE EDITED Format from form --> /editformat/{id}
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/editformat/{id}", method = RequestMethod.POST)
 	public String saveEditedFormat(@Valid Format editFormat, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) { // validation errors
@@ -73,6 +79,7 @@ public class FormatController { //----------- S E S S I O N --------------------
 	}
 	
 	// DELETE Format by id --> Risky Business -> Deletoimalla LP:n, deletoin koko prkleen Record tietokannan, koska silloin poistan Recordista parametrin
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/deleteformat/{id}", method = RequestMethod.GET)
 	public String deleteFormat(@PathVariable("id") Long formatId, Model model) {
 		formatRepository.deleteById(formatId);
@@ -115,6 +122,12 @@ public class FormatController { //----------- S E S S I O N --------------------
 //	public @ResponseBody Optional<Format> deleteFormatRest(@PathVariable("id") Long formatId) {
 //		formatRepository.deleteById(formatId);
 //		return "";
+//	}
+	
+	// https://spring.io/guides/tutorials/rest/
+//	@RequestMapping(value="/formats/{id}", method = RequestMethod.DELETE)
+//	void deleteFormatRest(@PathVariable("id") Long formatId) {
+//		formatRepository.deleteById(formatId);
 //	}
 	
 	
