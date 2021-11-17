@@ -8,6 +8,34 @@
 	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
+
+	<!-- header -->
+	<nav class="navbar navbar-inverse bg-dark fixed-top">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a class="navbar-brand text-light" th:href="@{/recordlist}" style="font-size:25px;">Record store</a>
+	    </div>
+	    <ul class="nav navbar-nav navbar-right">
+	    	<li class="nav-item">
+	    		<a sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:href="@{/orderlist}" style="padding: 45px 0px 45px 0px;">
+	    			<button class="btn btn-primary">My orders</button>
+	    		</a>
+	    		<a th:href="@{/shoppingcart}" style="padding: 45px 0px 45px 0px;">
+	    			<button class="btn btn-primary">Shopping Cart</button>
+	    		</a>
+	    		<!-- Sign in / Sign out -->
+	    		<form sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:action="@{/logout}" method="post" style="margin: 0; padding: 0; display: inline;">
+		     		<span><input type="submit" value="Sign Out" class="btn btn-primary" /></span>
+		     	</form>
+		     	 <form sec:authorize="isAnonymous()" th:href="@{/login}" method="post" style="margin: 0; padding: 0; display: inline;">
+		     		<span><input type="submit" value="Sign in" class="btn btn-primary" /></span>
+		     	</form>
+	    	</li>
+	    </ul>
+	  </div>
+	</nav>
+	
+	<!-- container -->
 	<div class="container" style="max-width:500px; margin-top: 5%; padding: 0px;">
 		<h1 style="text-align: center; margin-bottom: 25px;">Login</h1>
 		<h5 th:if="${param.error}" style="text-align: center; color: red">Invalid username and password.</h5>

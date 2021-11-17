@@ -23,6 +23,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+        // show h2
+        .authorizeRequests().antMatchers("/h2-console/**").permitAll()
+        .and()
+        .csrf().ignoringAntMatchers("/h2-console/**")
+        .and()
+        .headers().frameOptions().sameOrigin()
+        .and()
+        // end h2
         .authorizeRequests().antMatchers("/css/**", "/", "/recordlist", "/shoppingcart", "/addcart/{id}", "/plusone/{id}", "/minusone/{id}", "/deleteitem/{id}").permitAll()
         .and()
         .authorizeRequests().anyRequest().authenticated()

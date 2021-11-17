@@ -72,7 +72,7 @@ public class RecordController { //----------- S E S S I O N --------------------
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/editrecord/{id}", method = RequestMethod.GET)
 	public String editRecord(@PathVariable("id") Long recordId, Model model) {
-		model.addAttribute("editRecord", recordRepository.findById(recordId));
+		model.addAttribute("record", recordRepository.findById(recordId));
 		model.addAttribute("formats", formatRepository.findAll());
 		return "editrecord"; // .html
 	}

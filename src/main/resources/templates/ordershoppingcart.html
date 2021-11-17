@@ -15,6 +15,9 @@
 	      <a class="navbar-brand text-light" th:href="@{/recordlist}" style="font-size:25px;">Record store</a>
 	    </div>
 	    <ul class="nav navbar-nav navbar-right">
+	      <li sec:authorize="isAuthenticated()" class="nav-item text-light" th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</li>
+	    </ul>
+	    <ul class="nav navbar-nav navbar-right">
 	    	<li class="nav-item">
 	    		<a sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:href="@{/orderlist}" style="padding: 45px 0px 45px 0px;">
 	    			<button class="btn btn-primary">My orders</button>
