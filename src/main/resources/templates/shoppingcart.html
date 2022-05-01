@@ -12,7 +12,6 @@
 	<link href="https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap" rel="stylesheet"> 
 	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap" rel="stylesheet">
-	<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 </head>
 <body class="scrollbar">
 
@@ -39,9 +38,9 @@
 				<td th:text="${item.record.format.formatName}"></td>
 				<td th:text="${#numbers.formatDecimal(item.record.price, 2, 'DEFAULT', 2, 'COMMA')} + ' €'"></td>
 				<td>
-					<a th:href="@{/plusone/{id} (id=${item.record.recordId})}"><button class="plus-and-minus"><i style='font-size:11px' class='fas'>&#xf067;</i></button></a>
+					<a th:href="@{/plusone/{id} (id=${item.record.recordId})}"><button class="plus-and-minus"> + </button></a>
 					<span th:text="${item.quantity}" class="quantity-margin"></span>
-					<a th:href="@{/minusone/{id} (id=${item.record.recordId})}"><button class="plus-and-minus"><i style='font-size:11px' class='fas'>&#xf068;</i></button></a>
+					<a th:href="@{/minusone/{id} (id=${item.record.recordId})}"><button class="plus-and-minus"> – </button></a>
 				</td>
 				<td th:text="${#numbers.formatDecimal(item.totalCost, 2, 'DEFAULT', 2, 'COMMA')} + ' €'" ></td>
 				<td><a th:href="@{/deleteitem/{id} (id=${item.record.recordId})}"><button class="btn btn-outline-danger">Remove</button></a></td>
