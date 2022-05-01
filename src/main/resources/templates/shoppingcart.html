@@ -1,47 +1,27 @@
 <!-- http://localhost:8080/shoppingcart -->
-<!-- http://localhost:8080/shoppingcart -->
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> <!-- thymeleaf! -->
 <head>
-	<title>Record shop - Shopping cart</title>
+ 	<title>Black Moon Records</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
+	<link rel="stylesheet" href="css/styles.css" th:href="@{css/styles.css}" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap" rel="stylesheet">
+	<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 </head>
-<body>
+<body class="scrollbar">
 
 	<!-- header -->
-	<nav class="navbar navbar-inverse bg-dark fixed-top">
-	  <div class="container-fluid">
-	    <div class="navbar-header">
-	      <a class="navbar-brand text-light" th:href="@{/recordlist}" style="font-size:25px;">Record store</a>
-	    </div>
-	    <ul class="nav navbar-nav navbar-right">
-	      <li sec:authorize="isAuthenticated()" class="nav-item text-light" th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</li>
-	    </ul>
-	    <ul class="nav navbar-nav navbar-right">
-	    	<li class="nav-item">
-	    		<a sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:href="@{/orderlist}" style="padding: 45px 0px 45px 0px;">
-	    			<button class="btn btn-primary">My orders</button>
-	    		</a>
-	    		<a th:href="@{/shoppingcart}" style="padding: 45px 0px 45px 0px;">
-	    			<button class="btn btn-primary">Shopping Cart</button>
-	    		</a>
-	    		<!-- Sign in / Sign out -->
-	    		<form sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:action="@{/logout}" method="post" style="margin: 0; padding: 0; display: inline;">
-		     		<span><input type="submit" value="Sign Out" class="btn btn-primary" /></span>
-		     	</form>
-		     	 <form sec:authorize="isAnonymous()" th:href="@{/login}" method="post" style="margin: 0; padding: 0; display: inline;">
-		     		<span><input type="submit" value="Sign in" class="btn btn-primary" /></span>
-		     	</form>
-	    	</li>
-	    </ul>
-	  </div>
-	</nav>
-	
+	<div th:insert="fragments/navbar :: navbar-fragment"></div>
+
 	<!-- container -->
-	<div class="container" style="margin-top: 4%;">
-		<table class="table table-striped">
+	<div class="container" id="container-shopcart">
+		<table class="table table-striped th-text td-text ">
 			<tr>
 				<th>Record</th>
 				<th>Artist</th>
@@ -50,45 +30,34 @@
 				<th>Unit Price</th>
 				<th>Quantity</th>
 				<th>Total</th>
-				<th>Delete</th>
+				<th></th>
 			</tr>
 			<tr th:each="item : ${cartItems}">
-				<td><img th:src="${item.record.albumCover}" alt="album_cover" style="width:100%; max-width:100px;"></td>
+				<td><img th:src="${item.record.albumCover}" alt="album_cover" class="image-thumb"></td>
 				<td th:text="${item.record.artist}"></td>
 				<td th:text="${item.record.album}"></td>
 				<td th:text="${item.record.format.formatName}"></td>
 				<td th:text="${#numbers.formatDecimal(item.record.price, 2, 'DEFAULT', 2, 'COMMA')} + ' €'"></td>
 				<td>
-					<a th:href="@{/plusone/{id} (id=${item.record.recordId})}"><button class="btn btn-primary" style="max-width:100%; width:45px;"> + </button></a>
-					<span th:text="${item.quantity}"></span>
-					<a th:href="@{/minusone/{id} (id=${item.record.recordId})}"><button class="btn btn-primary" style="max-width:100%; width:45px;"> - </button></a>
+					<a th:href="@{/plusone/{id} (id=${item.record.recordId})}"><button class="plus-and-minus"><i style='font-size:11px' class='fas'>&#xf067;</i></button></a>
+					<span th:text="${item.quantity}" class="quantity-margin"></span>
+					<a th:href="@{/minusone/{id} (id=${item.record.recordId})}"><button class="plus-and-minus"><i style='font-size:11px' class='fas'>&#xf068;</i></button></a>
 				</td>
-				<td th:text="${#numbers.formatDecimal(item.totalCost, 2, 'DEFAULT', 2, 'COMMA')} + ' €'"></td>
-				<td><a th:href="@{/deleteitem/{id} (id=${item.record.recordId})}"><button class="btn btn-danger">Remove</button></a></td>
+				<td th:text="${#numbers.formatDecimal(item.totalCost, 2, 'DEFAULT', 2, 'COMMA')} + ' €'" ></td>
+				<td><a th:href="@{/deleteitem/{id} (id=${item.record.recordId})}"><button class="btn btn-outline-danger">Remove</button></a></td>
 			</tr>
-		</table>	
-		<p><b>Total sum: </b><span th:text="${#numbers.formatDecimal(sum, 1, 'DEFAULT', 2, 'COMMA')} + ' €'"></span></p>
-		<a th:href="@{/recordlist}" style="margin: 45px 20px 45px 0px;">
-			<button class="btn btn-primary">Continue shopping</button>
+		</table>
+
+		<h2 class="light-header">Total sum: <span th:text="${#numbers.formatDecimal(sum, 1, 'DEFAULT', 2, 'COMMA')} + ' €'" class="basic-header"></span></h2>
+		<a th:href="@{/recordlist}" id="button-continue">
+			<button class="btn btn-primary basic-text" id="continue-order-but">Continue shopping</button>
 		</a>
-		<a th:href="@{/saveshoppingcart}" style="margin: 45px 0px 45px 0px;"> 
-			<button class="btn btn-success" style="max-width:100%; width:160px;">Order</button>
+		<a th:href="@{/saveshoppingcart}" id="button-order"> 
+			<button class="btn btn-success basic-text" id="continue-order-but">Order</button>
 		</a>
 	</div>
 	
 </body>
 
-
-<!-- <td th:text="${item.record.price} + ' €'"></td> -->
-<!-- <td th:text="${item.totalCost} + ' €'"></td> -->
-
-<!--  testataan formia -->
-<!--  <th>FORM</th> -->
-<!--<td><form><input th:value="${item.quantity}"></form></td> -->
-
-
-<!--  th:object="${item}" -->
-<!--  th:value="${item.quantity}" -->
-<!--  th:field="*{quantity}" -->
 
 

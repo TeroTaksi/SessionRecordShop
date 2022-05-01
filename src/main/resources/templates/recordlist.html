@@ -3,65 +3,48 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> <!-- thymeleaf! -->
 <head>
-	<title>Record shop - Records</title>
+ 	<title>Black Moon Records</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
+	<link rel="stylesheet" href="css/styles.css" th:href="@{css/styles.css}" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap" rel="stylesheet"> 
 </head>
-<body style="background: rgb(245, 245, 245);">
+<body>
 
 	<!-- header -->
-	<nav class="navbar navbar-inverse bg-dark fixed-top">
-	  <div class="container-fluid">
-	    <div class="navbar-header">
-	      <a class="navbar-brand text-light" th:href="@{/recordlist}" style="font-size:25px;">Record store</a>
-	    </div>
-	    <ul class="nav navbar-nav navbar-right">
-	      <li sec:authorize="isAuthenticated()" class="nav-item text-light" th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</li>
-	    </ul>
-	    <ul class="nav navbar-nav navbar-right">
-	    	<li class="nav-item">
-	    		<a sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:href="@{/orderlist}" style="padding: 45px 0px 45px 0px;">
-	    			<button class="btn btn-primary">My orders</button>
-	    		</a>
-	    		<a th:href="@{/shoppingcart}" style="padding: 45px 0px 45px 0px;">
-	    			<button class="btn btn-primary">Shopping Cart</button>
-	    		</a>
-	    		<!-- Sign in / Sign out -->
-	    		<form sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:action="@{/logout}" method="post" style="margin: 0; padding: 0; display: inline;">
-		     		<span><input type="submit" value="Sign Out" class="btn btn-primary" /></span>
-		     	</form>
-		     	 <form sec:authorize="isAnonymous()" th:href="@{/login}" method="post" style="margin: 0; padding: 0; display: inline;">
-		     		<span><input type="submit" value="Sign in" class="btn btn-primary" /></span>
-		     	</form>
-	    	</li>
-	    </ul>
-	  </div>
-	</nav>
+	<div th:insert="fragments/navbar :: navbar-fragment"></div>
 	
 	<!-- container -->
-	<div class="container"  style="margin-top: 4%">
-	  <div class="row" th:each="record : ${records}" style="padding-bottom: 4%;">
+	<div class="container">
+	  <div sec:authorize="hasAuthority('ADMIN')" class="add-content"> <!-- sec:authorize = admin only-->
+		  <h1 sec:authorize="hasAuthority('ADMIN')" class="basic-header">Add a new record to the database:</h1>
+		  <a th:href="@{/addrecord}" sec:authorize="hasAuthority('ADMIN')"><button class="btn btn-secondary but-admin">Add Record</button></a>
+	  </div>
+	  <div sec:authorize="hasAuthority('ADMIN')" class="add-content"> <!-- sec:authorize = admin only-->
+		  <h1 sec:authorize="hasAuthority('ADMIN')" class="basic-header">Add a new format to the database:</h1>
+		  <a th:href="@{/formatslist}" sec:authorize="hasAuthority('ADMIN')"><button class="btn btn-secondary but-admin">Add format</button></a>
+	  </div>
+	  <div class="row container-list-row" th:each="record : ${records}">
 		<div class="col-sm-4">
-			<img th:src="${record.albumCover}" alt="${record.album}" style="width:100%; max-width:300px; border: 1px solid;  border-color: rgb(215, 215, 215);">
+			<img th:src="${record.albumCover}" alt="${record.album}" class="img-list">
 		</div>
 			<div class="col-sm-8">
-		    	<h5 th:text="${record.artist}"></h5> 
-		   		<p>Album: <span th:text="${record.album}"></span></p>
-		   		<p>Label: <span th:text="${record.label}"></span></p>
-		    	<p>Released: <span th:text="${record.year}"></span></p>
-		    	<p>Format: <span th:text="${record.format.formatName}"></span></p>
-		   		<p>Price: <span th:text="${#numbers.formatDecimal(record.price, 2, 'DEFAULT', 2, 'COMMA')} + ' €'"></span></p>
-		   		<a th:href="@{/addcart/{id} (id=${record.recordId})}"><button class="btn btn-primary">Add to Cart</button></a>
-		   		<!-- sec:authorize="" - Edit & Delete: admin only-->
-		   		<a th:href="@{/editrecord/{id} (id=${record.recordId})}" sec:authorize="hasAuthority('ADMIN')"><button class="btn btn-primary">Edit Record</button></a>
-		   		<a th:href="@{/deleterecord/{id} (id=${record.recordId})}" sec:authorize="hasAuthority('ADMIN')"><button class="btn btn-danger">Delete Record</button></a>
+		    	<h1 th:text="${record.artist}" class="basic-header text-margin"></h1> 
+		   		<p class="light-header"><span th:text="${record.album}"></span> (<span th:text="${record.format.formatName}">()</span>)</p>
+		   		<p class="light-text text-margin">Label: <span th:text="${record.label}" class="basic-text"></span></p>
+		    	<p class="light-text">Released: <span th:text="${record.year}" class="basic-text"></span></p>
+		   		<p class="basic-header"><span th:text="${#numbers.formatDecimal(record.price, 2, 'DEFAULT', 2, 'COMMA')} + ' €'"></span></p>
+		   		<a th:href="@{/addcart/{id} (id=${record.recordId})}"><button class="btn btn-primary button-add basic-text">Add to Cart</button></a>
+		   	    <!-- sec:authorize = admin only-->
+		   		<a th:href="@{/editrecord/{id} (id=${record.recordId})}" sec:authorize="hasAuthority('ADMIN')"><button class="btn btn-outline-secondary but-admin">Edit Record</button></a>
+		   		<a th:href="@{/deleterecord/{id} (id=${record.recordId})}" sec:authorize="hasAuthority('ADMIN')"><button class="btn btn-outline-danger but-admin">Delete Record</button></a>
 		   		<br>
 			 </div>
 	  	</div>
-		<hr sec:authorize="hasAuthority('ADMIN')">
-		<h5 sec:authorize="hasAuthority('ADMIN')">Admin tools:</h5>
-		<a th:href="@{/addrecord}" sec:authorize="hasAuthority('ADMIN')" style="padding: 45px 0px 45px 0px;"><button class="btn btn-primary">Add Record</button></a>
-		<a th:href="@{/formatslist}" sec:authorize="hasAuthority('ADMIN')" style="padding: 45px 0px 45px 0px;"><button class="btn btn-primary">Formats</button></a>
 	</div>
 	
 </body>
@@ -69,6 +52,6 @@
 
 <!--
 --------------------------
-
+<p class="record-headers">Format: <span th:text="${record.format.formatName}" class="records-info"></span></p>
 
  -->

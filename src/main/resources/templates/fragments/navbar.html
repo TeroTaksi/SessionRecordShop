@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<body>
+ 
+	<div th:fragment="navbar-fragment">
+		<nav class="navbar navbar-inverse bg-dark fixed-top">
+			<div class="container-fluid">
+			    <div class="navbar-header">
+			    	<a class="navbar-brand text-light logo-text" th:href="@{/recordlist}">Black Moon Records</a>
+			    </div>
+			    <ul class="nav navbar-nav navbar-right">
+			    	<li sec:authorize="isAuthenticated()" class="nav-item text-light light-text" th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</li>
+			    </ul>
+			    <ul class="nav navbar-nav navbar-right">
+			    	<li class="nav-item">
+			    		<a sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:href="@{/orderlist}" class="a-button-header record-headers">
+			    			<button class="btn btn-primary record-headers">My orders</button>
+			    		</a>
+			    		<a th:href="@{/shoppingcart}" class="a-button-header record-headers">
+			    			<button class="btn btn-light record-headers">Shopping Cart</button>
+			    		</a>
+			    		<!-- Sign in / Sign out -->
+			    		<form sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:action="@{/logout}" method="post" class="a-button-header">
+				     		<span><input type="submit" value="Sign Out" class="btn btn-light record-headers"/></span>
+				     	</form>
+				     	 <form sec:authorize="isAnonymous()" th:href="@{/login}" method="post" class="a-button-header">
+				     		<span><input type="submit" value="Sign in" class="btn btn-light record-headers" /></span>
+				     	</form>
+			    	</li>
+			    </ul>
+			</div>
+		</nav>
+	</div>
+ 
+</body>
+  
+</html>

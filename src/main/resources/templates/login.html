@@ -3,44 +3,27 @@
 <html xmlns:th="http://www.thymeleaf.org" 
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"> <!-- thymeleaf: th & security: sec -->
 <head>
-	<title>Bookstore</title>
+ 	<title>Black Moon Records</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
+	<link rel="stylesheet" href="css/styles.css" th:href="@{css/styles.css}" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap" rel="stylesheet"> s2?family=Coda+Caption:wght@800&display=swap" rel="stylesheet"> 
 </head>
 <body>
 
 	<!-- header -->
-	<nav class="navbar navbar-inverse bg-dark fixed-top">
-	  <div class="container-fluid">
-	    <div class="navbar-header">
-	      <a class="navbar-brand text-light" th:href="@{/recordlist}" style="font-size:25px;">Record store</a>
-	    </div>
-	    <ul class="nav navbar-nav navbar-right">
-	    	<li class="nav-item">
-	    		<a sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:href="@{/orderlist}" style="padding: 45px 0px 45px 0px;">
-	    			<button class="btn btn-primary">My orders</button>
-	    		</a>
-	    		<a th:href="@{/shoppingcart}" style="padding: 45px 0px 45px 0px;">
-	    			<button class="btn btn-primary">Shopping Cart</button>
-	    		</a>
-	    		<!-- Sign in / Sign out -->
-	    		<form sec:authorize="isAuthenticated()" sec:authorizeaccess="hasAnyRole('USER', 'ADMIN')" th:action="@{/logout}" method="post" style="margin: 0; padding: 0; display: inline;">
-		     		<span><input type="submit" value="Sign Out" class="btn btn-primary" /></span>
-		     	</form>
-		     	 <form sec:authorize="isAnonymous()" th:href="@{/login}" method="post" style="margin: 0; padding: 0; display: inline;">
-		     		<span><input type="submit" value="Sign in" class="btn btn-primary" /></span>
-		     	</form>
-	    	</li>
-	    </ul>
-	  </div>
-	</nav>
+	<div th:insert="fragments/navbar :: navbar-fragment"></div>
 	
 	<!-- container -->
-	<div class="container" style="max-width:500px; margin-top: 5%; padding: 0px;">
-		<h1 style="text-align: center; margin-bottom: 25px;">Login</h1>
-		<h5 th:if="${param.error}" style="text-align: center; color: red">Invalid username and password.</h5>
-		<h5 th:if="${param.logout}" style="text-align: center; color: green">You have been logged out.</h5>
-		<form th:action="@{/login}" method="post">
+	<div class="container container-login">
+		<h1 class="login-header">Login</h1>
+		<h5 th:if="${param.error}" class="invalid-text">Invalid username and password.</h5>
+		<h5 th:if="${param.logout}" class="valid-text">You have been logged out.</h5>
+		<form th:action="@{/login}" method="post" class="basic-text">
 			<div class="form-group">
 				<label>User Name: </label>
 				<input type="text" name="username" placeholder="User name" class="form-control" />

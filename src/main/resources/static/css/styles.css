@@ -1,0 +1,191 @@
+body {
+ 	background-color: rgb(240, 240, 240);
+}
+
+.but-admin {
+	padding: 8px 15px 8px 15px;
+	margin-left: 10px;
+}
+
+.center-content {
+	margin: auto;
+}
+
+.but-padding {
+	padding: 8px 15px 8px 15px;
+}
+
+
+/*---- Fonts ----*/
+.adm-user-header {
+	font-family: 'Roboto', sans-serif;
+	font-size: 33px;
+	letter-spacing: 1px;	
+}
+.basic-header {
+	font-family: 'Roboto', sans-serif;
+	font-size: 23px;
+	letter-spacing: 1px;
+}
+.light-header {
+	font-family: 'Work Sans', sans-serif;
+	font-size: 23.8px;
+}
+
+.basic-text {
+	font-family: 'Roboto', sans-serif;
+	font-size: 17px;
+}
+
+.light-text {
+	font-family: 'Work Sans', sans-serif;
+	font-size: 17px;
+}
+
+.text-margin {
+	margin-bottom: 4px;
+}
+
+
+/*---- Navbar - Header ----*/
+.logo-text {
+	font-family: 'Sigmar One', cursive;
+	font-size: 35px;
+	letter-spacing: -1px;
+	padding: 0;
+}
+
+.a-button-header {
+	margin: 5px 10px 5px 0px;
+	display: inline-block;
+}
+
+
+/*---- Recordlist.html ----*/
+.container {
+	margin-top: 6%;
+}
+
+.container-list-row {
+	padding-bottom: 4%;
+}
+
+.img-list {
+	width:100%;
+	max-width:300px;
+	border: 1px solid;
+	border-color: rgb(215, 215, 215);
+}
+
+.button-add {
+	background-color: rgb(51, 102, 255);
+	max-width: 100%;
+	width: 200px;
+	padding: 8px 5px 8px 5px;
+}
+
+.add-content {
+	background-color: rgb(38, 38, 38);
+	color: rgb(240, 240, 240);
+	padding: 35px;
+	margin-bottom: 30px;
+}
+
+
+/*---- Shoppingcart.html ----*/
+.scrollbar {
+  overflow-y: scroll;
+}
+
+.image-thumb {
+	width: 100%;
+	max-width:100px;
+}
+
+.th-text th {
+	font-family: 'Roboto', sans-serif;
+	font-size: 17px;
+	letter-spacing: 0.8px;
+}
+
+.td-text td {
+	font-family: 'Roboto', sans-serif;
+	font-size: 17px;
+}
+
+.plus-and-minus {
+	background-color: rgb(70, 70, 70);
+	color: white;
+	width:30px;
+	height: 30px; 
+ 	border: none;
+ 	border-radius: 50%;
+}
+
+.quantity-margin {
+	margin: 0px 5px; 
+}
+
+#button-continue {
+	display: inline-block;
+	margin: 45px 20px 45px 0px;
+}
+
+#button-order {
+	display: inline-block;
+	margin: 45px 0px 45px 0px;
+	width: 160px;
+}
+
+#continue-order-but {
+	max-width:100%;
+	width: 170px;
+	padding: 8px 0px 8px 0px;
+}
+
+
+/*---- Formatslists.html ----*/
+.table-width {
+	width: 100%;
+	max-width: 400px;
+}
+
+
+/*---- Ordershoppingcart.html (order complete) ----*/
+.container-center {
+	margin: auto;
+}
+.text-div {
+	margin: auto;
+	margin-top: 40%;
+	width: 50%;
+	text-align: center;
+}
+
+.a-display {
+	display: inline-block;
+}
+
+
+/*---- Login.html ----*/
+
+.container-login {
+	max-width:100%px;
+	width: 500px;
+	padding: 0px;
+}
+
+.login-header {
+	text-align: center; 
+	margin-bottom: 25px;
+}
+
+.invalid-text {
+	text-align: center;
+	color: red;
+}
+
+.valid-text {
+	text-align: center;
+	color: green;
+}
