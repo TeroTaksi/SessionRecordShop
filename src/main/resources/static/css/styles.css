@@ -17,11 +17,12 @@ body {
 
 
 /*---- Fonts ----*/
-.adm-user-header {
+.lrg-header {
 	font-family: 'Roboto', sans-serif;
 	font-size: 33px;
 	letter-spacing: 1px;	
 }
+
 .basic-header {
 	font-family: 'Roboto', sans-serif;
 	font-size: 23px;
@@ -168,16 +169,10 @@ body {
 
 
 /*---- Login.html ----*/
-
 .container-login {
 	max-width:100%px;
 	width: 500px;
 	padding: 0px;
-}
-
-.login-header {
-	text-align: center; 
-	margin-bottom: 25px;
 }
 
 .invalid-text {
@@ -189,5 +184,3 @@ body {
 	text-align: center;
 	color: green;
 }
-
-/*---- TEST ----*/
